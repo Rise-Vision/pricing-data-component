@@ -1,0 +1,5 @@
+{
+  "name": "pricing-data-component",
+  "description": "Fetches pricing data from Chargebee",
+  "version": "1.0.0"
+}
