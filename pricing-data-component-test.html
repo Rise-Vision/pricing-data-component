@@ -38,8 +38,9 @@
         });
 
         it("loads pricing at startup", ()=>{
+          const expectedOrigin = 'https://risevision-test.chargebee.com';
           return loadPromise.then(()=>{
-            chai.assert(window.fetch.called);
+            chai.assert(window.fetch.lastCall.arg.startsWith(expectedOrigin));
           });
         })
       })

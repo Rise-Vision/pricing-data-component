@@ -1,5 +1,18 @@
 import {PolymerElement, html} from 'https://unpkg.com/@polymer/polymer@next/polymer-element.js?module'
 
+const api = {
+  sites: {
+    prod: "risevision.chargebee.com",
+    test: "risevision-test.chargebee.com"
+  },
+  path: "/api/v2/plans",
+  auth: {
+    prod: "",
+    test: "Basic dGVzdF9xamJneWV3czFhTzhMNXhRWWJ1bHhDQTdXYXhONEVYZzo="
+  },
+  params: '?status[is]="active"&pricing_model[is]="volume"'
+};
+
 class PricingDataComponent extends PolymerElement {
   static get properties() {
     return {
@@ -16,7 +29,8 @@ class PricingDataComponent extends PolymerElement {
   }
 
   loadPricing() {
-    window.fetch("someurl");
+    const url = `https://${api.sites[this.testEnv ? "test" : "prod"]}${api.path}${api.params}`;
+    window.fetch(url);
   }
 }
 
