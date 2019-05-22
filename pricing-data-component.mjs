@@ -20,6 +20,10 @@ class PricingDataComponent extends PolymerElement {
         type: Boolean,
         value: true,
       },
+      data: {
+        type: Object,
+        value: {}
+      }
     };
   }
 
@@ -30,7 +34,10 @@ class PricingDataComponent extends PolymerElement {
 
   loadPricing() {
     const url = `https://${api.sites[this.testEnv ? "test" : "prod"]}${api.path}${api.params}`;
-    window.fetch(url);
+
+    window.fetch(url)
+    .then(data=>data.json())
+    .then(json=>this.set("data", json));
   }
 }
 

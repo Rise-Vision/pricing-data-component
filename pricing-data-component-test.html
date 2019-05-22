@@ -30,8 +30,9 @@
     <script>
       describe("pricing-data-component", ()=>{
         const loadPromise = new Promise(res=>window.addEventListener("load", res));
+        const testData = {test: "test-data"};
 
-        simple.mock(window, "fetch").resolveWith(true);
+        simple.mock(window, "fetch").resolveWith({json() {return testData;}});
 
         it("exists", ()=>{
           chai.assert(document.querySelector("pricing-data-component"));
@@ -41,6 +42,13 @@
           const expectedOrigin = 'https://risevision-test.chargebee.com';
           return loadPromise.then(()=>{
             chai.assert(window.fetch.lastCall.arg.startsWith(expectedOrigin));
+          });
+        });
+
+        it("sets data property", ()=>{
+          return loadPromise.then(()=>{
+            const loadedData = document.querySelector("pricing-data-component").data;
+            chai.assert.deepEqual(loadedData, testData);
           });
         })
       })
