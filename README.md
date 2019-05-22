@@ -5,6 +5,7 @@ Fetches pricing data from Chargebee
 # Test
 
 Start a local http server and then browse to pricing-data-component-test.html
+It's best to load with devtools open and cache disabled.
 
 # Usage
 
