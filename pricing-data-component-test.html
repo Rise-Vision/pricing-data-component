@@ -7,7 +7,8 @@
     <script src="https://unpkg.com/simple-mock"></script>
   </head>
   <body style="background-color: black; color: white">
-    <pricing-data-component></pricing-data-component>
+    <div id="component-container">
+    </div>
 
     <div id="mocha"></div>
 
@@ -29,28 +30,75 @@
     </script>
     <script>
       describe("pricing-data-component", ()=>{
-        const loadPromise = new Promise(res=>window.addEventListener("load", res));
-        const testData = {test: "test-data"};
+        function waitForDataLoad() {
+          return new Promise(res=>{
+            const interval = setInterval(()=>{
+              const component = document.querySelector("pricing-data-component");
+              const loadedData = component && component.data;
+              if (loadedData && Object.keys(loadedData).length) {
+                res(loadedData);
+                clearInterval(interval);
+              }
+            }, 200);
+          });
+        }
 
-        simple.mock(window, "fetch").resolveWith({json() {return testData;}});
+        describe("passing fetch", ()=>{
+          const testData = {test: "test-data"};
 
-        it("exists", ()=>{
-          chai.assert(document.querySelector("pricing-data-component"));
-        });
+          beforeEach(()=>{
+            simple.mock(window, "fetch").resolveWith({json() {return testData;}});
+            document.getElementById("component-container")
+            .appendChild(document.createElement("pricing-data-component"));
+          });
 
-        it("loads pricing at startup", ()=>{
-          const expectedOrigin = 'https://risevision-test.chargebee.com';
-          return loadPromise.then(()=>{
-            chai.assert(window.fetch.lastCall.arg.startsWith(expectedOrigin));
+          afterEach(()=>{
+            simple.restore();
+            document.getElementById("component-container")
+            .removeChild(document.querySelector("#component-container :first-child"));
+          });
+
+          it("exists", ()=>{
+            chai.assert(document.querySelector("pricing-data-component"));
+          });
+
+          it("initiates call to load pricing from correct origin", ()=>{
+            const expectedOrigin = 'https://risevision-test.chargebee.com';
+            return waitForDataLoad().then(()=>{
+              chai.assert(window.fetch.lastCall.arg.startsWith(expectedOrigin));
+            });
+          });
+
+          it("sets data property", ()=>{
+            return waitForDataLoad().then(data=>{
+              chai.assert.deepEqual(data, testData);
+            });
           });
         });
 
-        it("sets data property", ()=>{
-          return loadPromise.then(()=>{
-            const loadedData = document.querySelector("pricing-data-component").data;
-            chai.assert.deepEqual(loadedData, testData);
+        describe("failing fetch", function() {
+          this.timeout(4000);
+          const testData = {test: "test-data"};
+
+          beforeEach(()=>{
+            simple.mock(window, "fetch").resolveWith(Promise.reject()).resolveWith({json() {return testData;}});
+            document.getElementById("component-container")
+            .appendChild(document.createElement("pricing-data-component"));
           });
-        })
+
+          afterEach(()=>{
+            simple.restore();
+            document.getElementById("component-container")
+            .removeChild(document.querySelector("#component-container :first-child"));
+          });
+
+          it("retries data load", ()=>{
+            return waitForDataLoad().then(data=>{
+              chai.assert.deepEqual(data, testData);
+              chai.assert.equal(window.fetch.callCount, 2);
+            });
+          });
+        });
       })
     </script>
     <script class="mocha-exec">

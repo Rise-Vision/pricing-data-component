@@ -23,6 +23,10 @@ class PricingDataComponent extends PolymerElement {
       data: {
         type: Object,
         value: {}
+      },
+      retries: {
+        type: Number,
+        value: 5
       }
     };
   }
@@ -37,7 +41,12 @@ class PricingDataComponent extends PolymerElement {
 
     window.fetch(url)
     .then(data=>data.json())
-    .then(json=>this.set("data", json));
+    .then(json=>this.set("data", json))
+    .catch(()=>{
+      if (this.retries <= 0) return;
+      this.set("retries", this.retries - 1);
+      setTimeout(()=>this.loadPricing(), 3000);
+    });
   }
 }
 
