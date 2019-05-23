@@ -64,7 +64,7 @@
           });
 
           it("initiates call to load pricing from correct origin", ()=>{
-            const expectedOrigin = 'https://risevision-test.chargebee.com';
+            const expectedOrigin = "https://get-plans-c3r22v6wha-uc.a.run.app/";
             return waitForDataLoad().then(()=>{
               chai.assert(window.fetch.lastCall.arg.startsWith(expectedOrigin));
             });

@@ -1,24 +1,13 @@
 import {PolymerElement, html} from 'https://unpkg.com/@polymer/polymer@next/polymer-element.js?module'
 
-const api = {
-  sites: {
-    prod: "risevision.chargebee.com",
-    test: "risevision-test.chargebee.com"
-  },
-  path: "/api/v2/plans",
-  auth: {
-    prod: "",
-    test: "Basic dGVzdF9xamJneWV3czFhTzhMNXhRWWJ1bHhDQTdXYXhONEVYZzo="
-  },
-  params: '?status[is]="active"&pricing_model[is]="volume"'
-};
+const apiService = "https://get-plans-c3r22v6wha-uc.a.run.app/";
 
 class PricingDataComponent extends PolymerElement {
   static get properties() {
     return {
-      testEnv: {
+      prodEnv: {
         type: Boolean,
-        value: true,
+        value: false,
       },
       data: {
         type: Object,
@@ -38,9 +27,9 @@ class PricingDataComponent extends PolymerElement {
   }
 
   loadPricing() {
-    const url = `https://${api.sites[this.testEnv ? "test" : "prod"]}${api.path}${api.params}`;
+    const url = `${apiService}?env=${this.prodEnv ? "prod" : "test"}`;
 
-    window.fetch(url, {headers: {"Authorization": api.auth.test}})
+    window.fetch(url)
     .then(data=>data.json())
     .then(json=>{
       this.set("data", json);
