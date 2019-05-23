@@ -47,6 +47,7 @@
           const testData = {test: "test-data"};
 
           beforeEach(()=>{
+            simple.mock(window.localStorage, "getItem").returnWith();
             simple.mock(window, "fetch").resolveWith({json() {return testData;}});
             document.getElementById("component-container")
             .appendChild(document.createElement("pricing-data-component"));
@@ -81,7 +82,8 @@
           const testData = {test: "test-data"};
 
           beforeEach(()=>{
-            simple.mock(window, "fetch").resolveWith(Promise.reject()).resolveWith({json() {return testData;}});
+            simple.mock(window.localStorage, "getItem").returnWith();
+            simple.mock(window, "fetch").rejectWith().resolveWith({json() {return testData;}});
             document.getElementById("component-container")
             .appendChild(document.createElement("pricing-data-component"));
           });

@@ -33,6 +33,7 @@ class PricingDataComponent extends PolymerElement {
 
   ready() {
     super.ready();
+    this.getFromStorage();
     this.loadPricing();
   }
 
@@ -41,12 +42,27 @@ class PricingDataComponent extends PolymerElement {
 
     window.fetch(url, {headers: {"Authorization": api.auth.test}})
     .then(data=>data.json())
-    .then(json=>this.set("data", json))
+    .then(json=>{
+      this.set("data", json);
+      this.updateStorage(json);
+    })
     .catch(()=>{
       if (this.retries <= 0) return;
       this.set("retries", this.retries - 1);
-      setTimeout(()=>this.loadPricing(), 3000);
+      setTimeout(()=>this.loadPricing(), 2000);
     });
+  }
+
+  getFromStorage() {
+    try {
+      this.set("data", JSON.parse(window.localStorage.getItem("pricing-data-component")));
+    } catch(e) {}
+  }
+
+  updateStorage(json) {
+    try {
+      window.localStorage.setItem("pricing-data-component", JSON.stringify(json));
+    } catch(e) {}
   }
 }
 
