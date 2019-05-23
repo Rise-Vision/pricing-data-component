@@ -4,6 +4,16 @@
     <script type="module" src="pricing-data-component.mjs"></script>
   </head>
   <body>
-    <pricing-data-component></pricing-data-component>
+    <pricing-data-component logging></pricing-data-component>
+    <p>Try <code style="display:block">document.querySelector("pricing-data-component").data</code> in console.</p>
+    <p>Data:</p>
+    <pre id="data"></pre>
+  <script>
+    window.addEventListener("load", ()=>{
+      setTimeout(()=>{
+        document.getElementById("data").innerText = JSON.stringify(document.querySelector("pricing-data-component").data, null, 2);
+      },1500);
+    });
+  </script>
   </body>
 </html>

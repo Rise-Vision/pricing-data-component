@@ -7,7 +7,11 @@ class PricingDataComponent extends PolymerElement {
     return {
       prodEnv: {
         type: Boolean,
-        value: false,
+        value: false
+      },
+      logging: {
+        type: Boolean,
+        value: false
       },
       data: {
         type: Object,
@@ -45,12 +49,16 @@ class PricingDataComponent extends PolymerElement {
   getFromStorage() {
     try {
       this.set("data", JSON.parse(window.localStorage.getItem("pricing-data-component")));
+      if (this.logging && this.data && Object.keys(this.data).length) {
+        console.log("Retrieved data from local storage")
+      }
     } catch(e) {}
   }
 
   updateStorage(json) {
     try {
       window.localStorage.setItem("pricing-data-component", JSON.stringify(json));
+      if (this.logging) {console.log("Local storage data updated")}
     } catch(e) {}
   }
 }
