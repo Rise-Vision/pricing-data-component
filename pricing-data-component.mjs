@@ -39,7 +39,7 @@ class PricingDataComponent extends PolymerElement {
   loadPricing() {
     const url = `https://${api.sites[this.testEnv ? "test" : "prod"]}${api.path}${api.params}`;
 
-    window.fetch(url)
+    window.fetch(url, {headers: {"Authorization": api.auth.test}})
     .then(data=>data.json())
     .then(json=>this.set("data", json))
     .catch(()=>{
