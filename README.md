@@ -32,7 +32,7 @@ Start chromedriver.
 
 ``` bash
 npm install
-npx wdio wdio.conf.js
+npm run test-ci
 
 ```
 

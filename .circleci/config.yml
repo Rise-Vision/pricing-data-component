@@ -1,0 +1,57 @@
+version: 2.1
+orbs:
+  gcloud: circleci/gcp-cli@1.3.0
+
+jobs:
+  echo:
+    docker:
+      - image: circleci/node:latest-browsers
+    steps:
+      - run: echo test
+
+  test_and_deploy:
+    docker:
+      - image: circleci/node:latest-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: node-cache-{{ checksum "package.json" }}
+      - run: npm install
+      - run: npm install http-server
+      - save_cache:
+          key: node-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+
+      - run:
+          name: HTTP Server
+          command: npx http-server
+          background: true
+
+      - run:
+          name: Chromedriver
+          command: chromedriver --whitelisted-ips=
+          background: true
+
+      - run: npm run test-ci
+      - run: gcp-cli/install
+      - run: gcp-cli/initialize
+      - run:
+          name: copy to gcs
+          command: |
+            CHANNEL=if [ $CIRCLE_BRANCH=master ];then stable; else staging; fi
+            GCS_PATH=gs://widgets.risevision.com/$CHANNEL/components/pricing-component/pricing-data-component.mjs
+            gsutil cp pricing-data-component.mjs $GCS_PATH
+            gsutil -m setmeta -r -h "Cache-Control:private, max-age=0" $TARGET
+            gsutil acl -r ch -u AllUsers:R $TARGET
+
+workflows:
+  version: 2
+  main-workflow:
+    jobs:
+      - test_and_deploy:
+          filters:
+            branches:
+              only:
+                - /^(stage|staging)[/].*/
+                - master

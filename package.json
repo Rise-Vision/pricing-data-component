@@ -3,7 +3,9 @@
   "description": "Fetches pricing data from Chargebee",
   "version": "1.0.0",
   "scripts": {
-    "lint": "eslint pricing-data-component.mjs"
+    "lint": "eslint pricing-data-component.mjs",
+    "pretest-ci": "npm run lint",
+    "test-ci": "wdio wdio.conf.js"
   },
   "devDependencies": {
     "@wdio/cli": "^5.9.1",
