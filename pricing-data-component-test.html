@@ -1,19 +1,18 @@
 <html>
   <head>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-loader.js"></script>
-    <!-- <script src="/node_modules/web-component-tester/browser.js"></script> -->
     <script type="module" src="pricing-data-component.mjs"></script>
     <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css"></link>
     <script src="https://unpkg.com/simple-mock"></script>
+    <script src="https://unpkg.com/chai/chai.js"></script>
+    <script src="https://unpkg.com/mocha/mocha.js"></script>
+
   </head>
   <body style="background-color: black; color: white">
     <div id="component-container">
     </div>
 
     <div id="mocha"></div>
-
-    <script src="https://unpkg.com/chai/chai.js"></script>
-    <script src="https://unpkg.com/mocha/mocha.js"></script>
 
     <script class="mocha-init">
       mocha.setup({
