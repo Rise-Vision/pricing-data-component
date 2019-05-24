@@ -1,5 +1,11 @@
 {
   "name": "pricing-data-component",
   "description": "Fetches pricing data from Chargebee",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "scripts": {
+    "lint": "eslint pricing-data-component.mjs"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0"
+  }
 }

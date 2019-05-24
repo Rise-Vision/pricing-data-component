@@ -7,6 +7,8 @@ Fetches pricing data from Chargebee
 Start a local http server and then browse to pricing-data-component-test.html
 It's best to load with devtools open and cache disabled.
 
+This project does not use WCT since it is [not well supported](https://github.com/Polymer/tools/issues/3398)
+
 # Usage
 
 ``` html

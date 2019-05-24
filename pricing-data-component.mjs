@@ -1,4 +1,4 @@
-import {PolymerElement, html} from 'https://unpkg.com/@polymer/polymer@next/polymer-element.js?module'
+import {PolymerElement} from "https://unpkg.com/@polymer/polymer@next/polymer-element.js?module"
 
 const apiService = "https://get-plans-c3r22v6wha-uc.a.run.app/";
 
@@ -63,4 +63,4 @@ class PricingDataComponent extends PolymerElement {
   }
 }
 
-window.customElements.define('pricing-data-component', PricingDataComponent);
+window.customElements.define("pricing-data-component", PricingDataComponent);
