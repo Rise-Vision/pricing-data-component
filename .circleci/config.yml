@@ -11,6 +11,7 @@ jobs:
       - restore_cache:
           key: node-cache-{{ checksum "package.json" }}
       - run: npm install
+      - run: npm run build
       - run: npm install http-server
       - save_cache:
           key: node-cache-{{ checksum "package.json" }}
@@ -19,7 +20,7 @@ jobs:
 
       - run:
           name: HTTP Server
-          command: npx http-server
+          command: npx http-server build
           background: true
 
       - run:
@@ -28,20 +29,25 @@ jobs:
           background: true
 
       - run: npm run test-ci
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - build
 
   deploy:
     docker:
       - image: circleci/node:12.3.1
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - gcloud/install
       - gcloud/initialize
       - run:
           name: Copy to gcs
           command: |
             if [ $CIRCLE_BRANCH=master ];then CHANNEL=stable; else CHANNEL=staging; fi
-            GCS_PATH=gs://widgets.risevision.com/$CHANNEL/components/pricing-component/pricing-data-component.mjs
-            gsutil cp pricing-data-component.mjs $GCS_PATH
+            GCS_PATH=gs://widgets.risevision.com/$CHANNEL/components/pricing/pricing-data-component.mjs
+            gsutil cp build/pricing-data-component.mjs $GCS_PATH
             gsutil -m setmeta -r -h "Cache-Control:private, max-age=0" $GCS_PATH
             gsutil acl -r ch -u AllUsers:R $GCS_PATH
 
