@@ -4,7 +4,7 @@ RETRY_DELAY = 3000;
 
 describe("pricing-data-component", ()=>{
   browser.url("http://localhost:8080/pricing-data-component-test.html");
-  it("run tests in browser", ()=>{
+  it("passes in-browser tests", ()=>{
     let allTestsPassed = null;
 
     browser.waitUntil(()=>{
@@ -18,7 +18,11 @@ describe("pricing-data-component", ()=>{
           return suites.reduce((results, suite)=>{
             console.log("Suite count: ", suite.suites.length);
 
-            const testResults = suite.tests.map(test=>test.state);
+            const testResults = suite.tests.map(test=>({
+              state: test.state || null,
+              title: test.title,
+              suite: suite.title
+            }));
 
             return results.concat(testResults).concat(checkTests(suite.suites));
           }, []);
@@ -26,8 +30,8 @@ describe("pricing-data-component", ()=>{
       });
 
       console.log(results);
-      allTestsCompleted = results.every(result=>result !== null);
-      allTestsPassed = results.every(result=>result === "passed");
+      allTestsCompleted = results.every(result=>result.state !== null);
+      allTestsPassed = results.every(result=>result.state === "passed");
 
       return allTestsCompleted;
     }, COMPLETION_TIMEOUT, "Timed out waiting for all tests to finish", RETRY_DELAY);
