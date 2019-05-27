@@ -1,6 +1,6 @@
-# \<pricing-data-component\>
+# pricing-data-component
 
-Fetches pricing data from Chargebee
+Fetches pricing data from Chargebee.
 
 # Usage
 
@@ -18,9 +18,13 @@ Fetches pricing data from Chargebee
 
 The webcomponents-loader.js is a Polymer [requirement](https://polymer-library.polymer-project.org/3.0/docs/polyfills).
 
+# Demo
+
+Start a local http server and load pricing-data-component-demo.html in browser.
+
 # Testing
 
-## Live browser test
+### Live browser test
 
 Start a local http server and then browse to pricing-data-component-test.html.
 It's best to load with devtools open and cache disabled.
@@ -28,6 +32,7 @@ It's best to load with devtools open and cache disabled.
 ## Webdriver test
 
 Start a local http server.
+
 Start chromedriver.
 
 ``` bash
@@ -35,5 +40,7 @@ npm install
 npm run test-ci
 
 ```
+
+--------
 
 This project does not use WCT since it is fragile and [not well supported](https://github.com/Polymer/tools/issues/3398).
