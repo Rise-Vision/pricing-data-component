@@ -33,7 +33,7 @@
           return new Promise(res=>{
             const interval = setInterval(()=>{
               const component = document.querySelector("pricing-data-component");
-              const loadedData = component && component.data;
+              const loadedData = component && component.pricingData;
               if (loadedData && Object.keys(loadedData).length) {
                 res(loadedData);
                 clearInterval(interval);

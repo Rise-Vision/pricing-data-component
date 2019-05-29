@@ -13,9 +13,10 @@ class PricingDataComponent extends PolymerElement {
         type: Boolean,
         value: false
       },
-      data: {
+      pricingData: {
         type: Object,
-        value: {}
+        value: {},
+        notify: true
       },
       retries: {
         type: Number,
@@ -36,7 +37,7 @@ class PricingDataComponent extends PolymerElement {
     window.fetch(url)
     .then(data=>data.json())
     .then(json=>{
-      this.set("data", json);
+      this.set("pricingData", json);
       this.updateStorage(json);
     })
     .catch(()=>{
@@ -48,8 +49,8 @@ class PricingDataComponent extends PolymerElement {
 
   getFromStorage() {
     try {
-      this.set("data", JSON.parse(window.localStorage.getItem("pricing-data-component")));
-      if (this.logging && this.data && Object.keys(this.data).length) {
+      this.set("pricingData", JSON.parse(window.localStorage.getItem("pricing-data-component")));
+      if (this.logging && this.pricingData && Object.keys(this.pricingData).length) {
         console.log("Retrieved data from local storage")
       }
     } catch(e) {}
