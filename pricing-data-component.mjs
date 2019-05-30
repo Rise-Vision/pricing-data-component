@@ -41,7 +41,11 @@ class PricingDataComponent extends PolymerElement {
       this.updateStorage(json);
     })
     .catch(()=>{
-      if (this.retries <= 0) return;
+      if (this.retries <= 0) {
+        this.set("pricingData", {failed: true});
+        return;
+      }
+
       this.set("retries", this.retries - 1);
       setTimeout(()=>this.loadPricing(), 2000);
     });
