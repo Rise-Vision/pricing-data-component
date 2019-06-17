@@ -1,4 +1,6 @@
-import {PolymerElement} from "https://unpkg.com/@polymer/polymer@next/polymer-element.js?module"
+import {PolymerElement} from "https://unpkg.com/@polymer/polymer@3.2.0/polymer-element.js?module"
+import {microTask} from "https://unpkg.com/@polymer/polymer@3.2.0/lib/utils/async.js?module"
+import {Debouncer} from "https://unpkg.com/@polymer/polymer@3.2.0/lib/utils/debounce.js?module"
 
 const apiService = "https://get-plans-c3r22v6wha-uc.a.run.app/";
 
@@ -7,7 +9,8 @@ class PricingDataComponent extends PolymerElement {
     return {
       prodEnv: {
         type: Boolean,
-        value: false
+        value: false,
+        observer: "prodEnvUpdated"
       },
       logging: {
         type: Boolean,
@@ -28,7 +31,10 @@ class PricingDataComponent extends PolymerElement {
   ready() {
     super.ready();
     this.getFromStorage();
-    this.loadPricing();
+  }
+
+  prodEnvUpdated() {
+    this._debounceJob = Debouncer.debounce(this._debounceJob, microTask, ()=>this.loadPricing());
   }
 
   loadPricing() {
