@@ -16,6 +16,8 @@ Fetches pricing data from Chargebee.
 </html>
 ```
 
+Include boolean attribute `prod-env` to retrieve data from the live / production pricing database.
+
 The webcomponents-loader.js is a Polymer [requirement](https://polymer-library.polymer-project.org/3.0/docs/polyfills).
 
 # Demo
