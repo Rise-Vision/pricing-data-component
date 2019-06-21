@@ -4,6 +4,8 @@ Fetches pricing data from Chargebee.
 
 # Usage
 
+As a no-build html import.
+
 ``` html
 <html>
   <head>
@@ -16,22 +18,45 @@ Fetches pricing data from Chargebee.
 </html>
 ```
 
-Include boolean attribute `prod-env` to retrieve data from the live / production pricing database.
+As a node import
+
+``` bash
+npm install Rise-Vision/pricing-data-component
+```
+
+Then in a parent component that is an entry point for a bundler
+
+``` js
+import "pricing-data-component/lib/pricing-data-component.js"
+```
 
 The webcomponents-loader.js is a Polymer [requirement](https://polymer-library.polymer-project.org/3.0/docs/polyfills).
+It is required in both cases.
+
+### Addributes
+
+Include boolean attribute `prod-env` to retrieve data from the live / production pricing database.
 
 # Demo
 
 Start a local http server and load pricing-data-component-demo.html in browser.
 
-# Testing
+# Development
 
-### Live browser test
+Change the .mjs file then test, build, commit.
+
+`npm run build` will update the `lib` dir and merging that to master is a release for the node library.
+
+The html import is deployed as part of the circle-ci job via GCS update.
+
+### Testing
+
+#### Live browser test
 
 Start a local http server and then browse to pricing-data-component-test.html.
 It's best to load with devtools open and cache disabled.
 
-## Webdriver test
+#### Webdriver test
 
 Start a local http server.
 
